@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="zyd.zhihu.dao.QuestionDao">
+    <!--auto generated Code-->
+    <resultMap id="BaseResultMap" type="zyd.zhihu.model.Question">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="comment_count" property="commentCount" jdbcType="INTEGER"/>
+        <result column="content" property="content" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="Base_Column_List">
+        id,
+        title,
+        user_id,
+        created_time,
+        comment_count,
+        content
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="addQuestion" useGeneratedKeys="true" keyProperty="question.id">
+        INSERT INTO question (
+            id,
+            title,
+            user_id,
+            created_time,
+            comment_count,
+            content
+        ) VALUES (
+            #{question.id,jdbcType=INTEGER},
+            #{question.title,jdbcType=VARCHAR},
+            #{question.userId,jdbcType=INTEGER},
+            #{question.createdTime,jdbcType=TIMESTAMP},
+            #{question.commentCount,jdbcType=INTEGER},
+            #{question.content,jdbcType=LONGVARCHAR}
+        )
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="question.id">
+        INSERT INTO question
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="question.id!=null">id,</if>
+            <if test="question.title!=null">title,</if>
+            <if test="question.userId!=null">user_id,</if>
+            <if test="question.createdTime!=null">created_time,</if>
+            <if test="question.commentCount!=null">comment_count,</if>
+            <if test="question.content!=null">content,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="question.id!=null">#{question.id,jdbcType=INTEGER},
+            </if>
+            <if test="question.title!=null">#{question.title,jdbcType=VARCHAR},
+            </if>
+            <if test="question.userId!=null">#{question.userId,jdbcType=INTEGER},
+            </if>
+            <if test="question.createdTime!=null">#{question.createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="question.commentCount!=null">#{question.commentCount,jdbcType=INTEGER},
+            </if>
+            <if test="question.content!=null">#{question.content,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO question (
+        <include refid="Base_Column_List"/>
+        )VALUES
+        <foreach collection="questions" item="question" index="index" separator=",">
+            (
+            #{question.id,jdbcType=INTEGER},
+            #{question.title,jdbcType=VARCHAR},
+            #{question.userId,jdbcType=INTEGER},
+            #{question.createdTime,jdbcType=TIMESTAMP},
+            #{question.commentCount,jdbcType=INTEGER},
+            #{question.content,jdbcType=LONGVARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE question
+        <set>
+            <if test="question.id != null">id= #{question.id,jdbcType=INTEGER},</if>
+            <if test="question.title != null">title= #{question.title,jdbcType=VARCHAR},</if>
+            <if test="question.userId != null">user_id= #{question.userId,jdbcType=INTEGER},</if>
+            <if test="question.createdTime != null">created_time= #{question.createdTime,jdbcType=TIMESTAMP},</if>
+            <if test="question.commentCount != null">comment_count= #{question.commentCount,jdbcType=INTEGER},</if>
+            <if test="question.content != null">content= #{question.content,jdbcType=LONGVARCHAR}</if>
+        </set>
+        WHERE id = #{question.id,jdbcType=INTEGER}
+    </update>
+    <select id="getLatestQuestions" resultType="zyd.zhihu.model.Question" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM question
+        <if test="userId != 0">
+            WHERE user_id = #{userId}
+        </if>
+        ORDER BY id DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+    <select id="getQuestionById" resultType="zyd.zhihu.model.Question">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM question
+        WHERE
+        id = #{id}
+    </select>
+    <update id="updateCommentCountById">
+        UPDATE question
+        SET comment_count = comment_count + #{increment}
+        WHERE id = #{id}
+    </update>
+</mapper>
+

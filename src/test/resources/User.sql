@@ -1,0 +1,10 @@
+-- auto Generated on 2018-02-08 16:39:48 
+DROP TABLE IF EXISTS user;
+CREATE TABLE user(
+	id INT (11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+	name VARCHAR (50) UNIQUE DEFAULT '' COMMENT 'name',
+	password VARCHAR (50) DEFAULT '' COMMENT 'password',
+	salt VARCHAR (50) DEFAULT '' COMMENT 'salt',
+	head_url VARCHAR (50) DEFAULT '' COMMENT 'headUrl',
+	PRIMARY KEY (id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT 'user';

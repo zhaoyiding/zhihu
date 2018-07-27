@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="zyd.zhihu.dao.LoginTicketDao">
+    <!--auto generated Code-->
+    <resultMap id="BaseResultMap" type="zyd.zhihu.model.LoginTicket">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="expired" property="expired" jdbcType="TIMESTAMP"/>
+        <result column="ticket" property="ticket" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="Base_Column_List">
+        id,
+        user_id,
+        expired,
+        ticket,
+        status
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="addTicket" useGeneratedKeys="true" keyProperty="loginTicket.id">
+        INSERT INTO login_ticket (
+            id,
+            user_id,
+            expired,
+            ticket,
+            status
+        ) VALUES (
+            #{loginTicket.id,jdbcType=INTEGER},
+            #{loginTicket.userId,jdbcType=INTEGER},
+            #{loginTicket.expired,jdbcType=DATE},
+            #{loginTicket.ticket,jdbcType=VARCHAR},
+            #{loginTicket.status,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="loginTicket.id">
+        INSERT INTO login_ticket
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="loginTicket.id!=null">id,</if>
+            <if test="loginTicket.userId!=null">user_id,</if>
+            <if test="loginTicket.expired!=null">expired,</if>
+            <if test="loginTicket.ticket!=null">ticket,</if>
+            <if test="loginTicket.status!=null">status,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="loginTicket.id!=null">#{loginTicket.id,jdbcType=INTEGER},
+            </if>
+            <if test="loginTicket.userId!=null">#{loginTicket.userId,jdbcType=INTEGER},
+            </if>
+            <if test="loginTicket.expired!=null">#{loginTicket.expired,jdbcType=DATE},
+            </if>
+            <if test="loginTicket.ticket!=null">#{loginTicket.ticket,jdbcType=VARCHAR},
+            </if>
+            <if test="loginTicket.status!=null">#{loginTicket.status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO login_ticket (
+        <include refid="Base_Column_List"/>
+        )VALUES
+        <foreach collection="loginTickets" item="loginTicket" index="index" separator=",">
+            (
+            #{loginTicket.id,jdbcType=INTEGER},
+            #{loginTicket.userId,jdbcType=INTEGER},
+            #{loginTicket.expired,jdbcType=DATE},
+            #{loginTicket.ticket,jdbcType=VARCHAR},
+            #{loginTicket.status,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="updateTicketStatus">
+        UPDATE login_ticket
+        <set>
+            status = 1
+        </set>
+        WHERE ticket= #{ticket,jdbcType=VARCHAR}
+    </update>
+    <select id="getLoginTicketByTicket" resultType="zyd.zhihu.model.LoginTicket">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM login_ticket
+        WHERE ticket =#{ticket}
+    </select>
+</mapper>
+

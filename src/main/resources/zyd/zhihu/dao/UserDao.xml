@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="zyd.zhihu.dao.UserDao">
+    <!--auto generated Code-->
+    <resultMap id="BaseResultMap" type="zyd.zhihu.model.User">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="salt" property="salt" jdbcType="VARCHAR"/>
+        <result column="head_url" property="headUrl" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="Base_Column_List">
+        id,
+        name,
+        password,
+        salt,
+        head_url
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="user.id">
+        INSERT INTO user (
+            id,
+            name,
+            password,
+            salt,
+            head_url
+        ) VALUES (
+            #{user.id,jdbcType=INTEGER},
+            #{user.name,jdbcType=VARCHAR},
+            #{user.password,jdbcType=VARCHAR},
+            #{user.salt,jdbcType=VARCHAR},
+            #{user.headUrl,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="user.id">
+        INSERT INTO user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="user.id!=null"> id,</if>
+            <if test="user.name!=null"> name,</if>
+            <if test="user.password!=null"> password,</if>
+            <if test="user.salt!=null"> salt,</if>
+            <if test="user.headUrl!=null"> head_url,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="user.id!=null">#{user.id,jdbcType=INTEGER},
+            </if>
+            <if test="user.name!=null">#{user.name,jdbcType=VARCHAR},
+            </if>
+            <if test="user.password!=null">#{user.password,jdbcType=VARCHAR},
+            </if>
+            <if test="user.salt!=null">#{user.salt,jdbcType=VARCHAR},
+            </if>
+            <if test="user.headUrl!=null">#{user.headUrl,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO user (
+        <include refid="Base_Column_List"/>
+        )VALUES
+        <foreach collection="users" item="user" index="index" separator=",">
+            (
+            #{user.id,jdbcType=INTEGER},
+            #{user.name,jdbcType=VARCHAR},
+            #{user.password,jdbcType=VARCHAR},
+            #{user.salt,jdbcType=VARCHAR},
+            #{user.headUrl,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE user
+        <set>
+            <if test="user.id != null"> id= #{user.id,jdbcType=INTEGER},</if>
+            <if test="user.name != null"> name= #{user.name,jdbcType=VARCHAR},</if>
+            <if test="user.password != null"> password= #{user.password,jdbcType=VARCHAR},</if>
+            <if test="user.salt != null"> salt= #{user.salt,jdbcType=VARCHAR},</if>
+            <if test="user.headUrl != null"> head_url= #{user.headUrl,jdbcType=VARCHAR}</if>
+        </set>
+        WHERE id = #{user.id,jdbcType=INTEGER}
+    </update>
+    <select id="getUserById" resultType="zyd.zhihu.model.User">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user
+        WHERE id = #{userId}
+    </select>
+    <select id="getUserByName" resultType="zyd.zhihu.model.User">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user
+        WHERE name = #{name}
+    </select>
+</mapper>
+

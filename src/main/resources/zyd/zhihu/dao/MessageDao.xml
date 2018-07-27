@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="zyd.zhihu.dao.MessageDao">
+    <!--auto generated Code-->
+    <resultMap id="BaseResultMap" type="zyd.zhihu.model.Message">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="from_id" property="fromId" jdbcType="INTEGER"/>
+        <result column="to_id" property="toId" jdbcType="INTEGER"/>
+        <result column="conversation_id" property="conversationId" jdbcType="VARCHAR"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="content" property="content" jdbcType="LONGVARCHAR"/>
+        <result column="has_read" property="hasRead" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="Base_Column_List">
+        id,
+        from_id,
+        to_id,
+        conversation_id,
+        created_time,
+        content,
+        has_read
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="addMessage" useGeneratedKeys="true" keyProperty="message.id">
+        INSERT INTO message (
+            id,
+            from_id,
+            to_id,
+            conversation_id,
+            created_time,
+            content,
+            has_read
+        ) VALUES (
+            #{message.id,jdbcType=INTEGER},
+            #{message.fromId,jdbcType=INTEGER},
+            #{message.toId,jdbcType=INTEGER},
+            #{message.conversationId,jdbcType=VARCHAR},
+            #{message.createdTime,jdbcType=TIMESTAMP},
+            #{message.content,jdbcType=LONGVARCHAR},
+            #{message.hasRead,jdbcType=INTEGER}
+        )
+    </insert>
+    <select id="getConversationList" resultType="zyd.zhihu.model.Message">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM message
+        WHERE id IN
+        ( SELECT MAX(id)
+        FROM message
+        WHERE from_id=#{userId}
+        OR to_id=#{userId}
+        GROUP BY conversation_id)
+        ORDER BY id DESC
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="getConversationDetail" resultType="zyd.zhihu.model.Message">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM message
+        WHERE conversation_id=#{conversationId}
+        ORDER BY id DESC
+        limit #{offset}, #{limit}
+    </select>
+    <select id="getConversationUnreadCount" resultType="int">
+        SELECT COUNT(id)
+        FROM message
+        WHERE conversation_id=#{conversationId}
+        AND has_read=0
+    </select>
+    <select id="getMessageCount" resultType="int">
+        SELECT COUNT(id)
+        FROM message
+        WHERE conversation_id=#{conversationId}
+    </select>
+    <update id="setMessageHasRead">
+        UPDATE message
+        SET has_read=#{hasRead}
+        WHERE id=#{id}
+    </update>
+
+
+</mapper>
+

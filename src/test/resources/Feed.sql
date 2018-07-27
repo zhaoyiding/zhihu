@@ -1,0 +1,11 @@
+-- auto Generated on 2018-02-28 20:29:18 
+-- DROP TABLE IF EXISTS feed; 
+CREATE TABLE feed(
+	id INT (11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+	created_time TIMESTAMP NOT NULL COMMENT 'createdTime',
+	user_id INT (11) NOT NULL COMMENT 'userId',
+	data TINYTEXT NOT NULL COMMENT 'data',
+	type INT (11) NOT NULL COMMENT 'type',
+	INDEX(user_id),
+	PRIMARY KEY (id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT 'feed';

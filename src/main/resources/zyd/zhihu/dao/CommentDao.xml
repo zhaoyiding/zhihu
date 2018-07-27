@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="zyd.zhihu.dao.CommentDao">
+    <!--auto generated Code-->
+    <resultMap id="BaseResultMap" type="zyd.zhihu.model.Comment">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="entity_type" property="entityType" jdbcType="INTEGER"/>
+        <result column="entity_id" property="entityId" jdbcType="INTEGER"/>
+        <result column="content" property="content" jdbcType="LONGVARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="Base_Column_List">
+        id,
+        user_id,
+        created_time,
+        entity_type,
+        entity_id,
+        content,
+status
+</sql>
+
+    <!--auto generated Code-->
+    <insert id="addComment" useGeneratedKeys="true" keyProperty="comment.id">
+        INSERT INTO comment (
+            id,
+            user_id,
+            created_time,
+            entity_type,
+            entity_id,
+            content,
+            status
+        ) VALUES (
+            #{comment.id},
+            #{comment.userId},
+            #{comment.createdTime},
+            #{comment.entityType},
+            #{comment.entityId},
+            #{comment.content},
+            #{comment.status}
+        )
+	</insert>
+
+    <!--auto generated Code-->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="comment.id">
+        INSERT INTO comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="comment.id!=null">id,</if>
+            <if test="comment.userId!=null">user_id,</if>
+            <if test="comment.createdTime!=null">created_time,</if>
+            <if test="comment.entityType!=null">entity_type,</if>
+            <if test="comment.entityId!=null">entity_id,</if>
+            <if test="comment.content!=null">content,</if>
+            <if test="comment.status!=null">status</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="comment.id!=null">#{comment.id},</if>
+            <if test="comment.userId!=null">#{comment.userId},</if>
+            <if test="comment.createdTime!=null">#{comment.createdTime},</if>
+            <if test="comment.entityType!=null">#{comment.entityType},</if>
+            <if test="comment.entityId!=null">#{comment.entityId},</if>
+            <if test="comment.content!=null">#{comment.content},</if>
+            <if test="comment.status!=null">#{comment.status}</if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">INSERT INTO comment(
+        <include refid="Base_Column_List"/>
+        )VALUES
+        <foreach collection="comments" item="comment" index="index" separator=",">
+            (
+            #{comment.id},
+            #{comment.userId},
+            #{comment.createdTime},
+            #{comment.entityType},
+            #{comment.entityId},
+            #{comment.content},
+            #{comment.status}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="updateStatus">
+        UPDATE comment
+        <set>
+            status = #{status,jdbcType=INTEGER}
+        </set>
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="getCommentsByEntity" resultType="zyd.zhihu.model.Comment">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM comment
+        WHERE
+        entity_type=#{entityType}
+        AND
+        entity_id=#{entityId}
+        ORDER BY id DESC
+    </select>
+    <select id="getCommentCountByEntity" resultType="int">
+        SELECT COUNT(id)
+        FROM comment
+        WHERE entity_type=#{entityType}
+        AND entity_id=#{entityId}
+    </select>
+    <select id="getCommentsByUserId" resultType="zyd.zhihu.model.Comment">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM comment
+        WHERE
+        user_id=#{userId}
+        ORDER BY id DESC
+    </select>
+    <select id="getCommentCountByUserId" resultType="int">
+        SELECT COUNT(id)
+        FROM comment
+        WHERE user_id=#{userId}
+    </select>
+    <select id="getCommentById" resultType="zyd.zhihu.model.Comment">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM comment
+        WHERE id=#{id}
+    </select>
+</mapper>
+
